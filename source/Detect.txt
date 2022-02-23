@@ -78,7 +78,7 @@ TextLabel.Size = UDim2.new(0, 316, 0, 50)
 
 TextLabel.Font = Enum.Font.SciFi
 
-TextLabel.Text = "Update Available Version:1.1
+TextLabel.Text = "Update Available Version:1.1"
 
 TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
