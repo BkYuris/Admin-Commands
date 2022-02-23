@@ -10,7 +10,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",{
 
             wait(3)
 
-local version = "1.1"
+local version = "1.0"
 
 if version == "1.0" then
 
@@ -78,7 +78,7 @@ TextLabel.Size = UDim2.new(0, 316, 0, 50)
 
 TextLabel.Font = Enum.Font.SciFi
 
-TextLabel.Text = "Update Available Version:1.1"
+TextLabel.Text = "Update Avail. Version:1.1"
 
 TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
@@ -122,6 +122,6 @@ TextButton.Text = "Go Into My YT Channel for Update"
 
 TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 
-TextButton.TextSize = 50.000
+TextButton.TextSize = 20.000
 
 end
