@@ -10,7 +10,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",{
 
             wait(3)
 
-local version = loadstring(game:HttpGet(('https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/source/version.txt'),true))()
+local version = "1.0"
 
 if version == "1.0" then
 
