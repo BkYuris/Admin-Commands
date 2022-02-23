@@ -1,5 +1,6 @@
 -- Prefix Words
 local Prefix = ";"
+local ForgotPrefix = "Your Prefix is '"..Prefix.."'"
 
 -- Help Commands
 local cmdskey = ""..Prefix.."cmds"
@@ -14,7 +15,8 @@ local speedkey = ""..Prefix.."speedhack"
 local gunkey = ""..Prefix.."gun"
 local rejoinkey = ""..Prefix.."rejoin me"
 local rejoinallkey = ""..Prefix.."rejoin all"
-
+local nocliponkey = ""..Prefix.."noclip on"
+local noclipoffkey = ""..Prefix.."noclip off"
 -- BL
 
 -- Instances:
@@ -370,78 +372,46 @@ end
 if CmdBar.Text == rejoinallkey then
 game:GetService("TeleportService"):Teleport(game.PlaceId, Players)
 end
+if CmdBar.Text == nocliponkey then
+State.Noclip = true
+game:GetService("RunService").Stepped:Connect(function()
+if States.Noclips then
+pcall(function()
+game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
+game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
+end)
+end
+end)
+end
+if CmdBar.Text == noclipoffkey then
+State.Noclip = false
+end
 if CmdBar.Text == ""..Prefix.."changePrefix !" then
 Prefix = "!"
-cmdskey = ""..Prefix.."cmds"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly on"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin"
-rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix ;" then
 Prefix = ";"
-cmdskey = ""..Prefix.."cmds"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly on"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin"
-rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
-if CmdBar.Text == ""..Prefix.."changePrefix ;" then
-Prefix = ";"
-cmdskey = ""..Prefix.."cmds"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly on"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin"
-rejoinallkey = ""..Prefix.."rejoin all"
+if CmdBar.Text == ""..Prefix.."changePrefix :" then
+Prefix = ":"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix /" then
 Prefix = "/"
-cmdskey = ""..Prefix.."cmds"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly on"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin"
-rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix ." then
 Prefix = "."
-cmdskey = ""..Prefix.."cmds"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly on"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin"
-rejoinallkey = ""..Prefix.."rejoin all"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == ""..Prefix.."changePrefix *" then
+Prefix = "."
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == cmdskey then
-CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.."\n"..speedkey.."\n"..gunkey.."\n"..rejoinkey.." / "..rejoinallkey.."\n"..Prefix.."changePrefix ! or ; or : or / or ."
+CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.."\n"..speedkey.."\n"..gunkey.."\n"..rejoinkey.." / "..rejoinallkey.."\n"..Prefix.."noclip on / "..Prefix.."noclip off\n"..Prefix.."changePrefix ! or ; or : or / or . or *"
 end
 end
 end)
