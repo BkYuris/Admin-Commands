@@ -1,0 +1,45 @@
+game:GetService("StarterGui"):SetCore("SendNotification",{
+
+                Title = "Update",
+
+                Text = "Checking Update Please Wait!",
+
+                Duration = 3
+
+            })
+
+            wait(3)
+
+local version = loadstring(game:HttpGet(('https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/source/version.txt'),true))()
+
+if version == "1.0" then
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+
+                Title = "Update",
+
+                Text = "No Update Detected Enjoy",
+
+                Duration = 3
+
+            })
+
+            loadstring(game:HttpGet(('https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/source/Gui.txt'),true))()
+
+end
+
+if version == "1.1" then
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+
+                Title = "Update",
+
+                Text = "Update Detected!",
+
+                Duration = 3
+
+            })
+
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/source/Update.txt'),true))()
+
+end
