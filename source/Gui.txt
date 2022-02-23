@@ -9,9 +9,12 @@ local esponkey = ""..Prefix.."esp on"
 local espoffkey = ""..Prefix.."esp off"
 local xrayonkey = ""..Prefix.."xray on"
 local xrayoffkey = ""..Prefix.."xray off"
-local flyonkey = ""..Prefix.."fly on"
-local flyoffkey = ""..Prefix.."fly off"
+local flyonkey = ""..Prefix.."fly"
+local speedkey = ""..Prefix.."speedhack"
 local gunkey = ""..Prefix.."gun"
+local rejoinkey = ""..Prefix.."rejoin me"
+local rejoinallkey = ""..Prefix.."rejoin all"
+
 -- BL
 
 -- Instances:
@@ -49,7 +52,7 @@ Press.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
 Press.Position = UDim2.new(0, 0, 0.846153915, 0)
 Press.Size = UDim2.new(0, 316, 0, 50)
 Press.Font = Enum.Font.SciFi
-Press.Text = "Execute"
+Press.Text = "Start"
 Press.TextColor3 = Color3.fromRGB(0, 0, 0)
 Press.TextSize = 28.000
 
@@ -59,9 +62,9 @@ CmdBar.BackgroundColor3 = Color3.fromRGB(125, 102, 255)
 CmdBar.Position = UDim2.new(0.0664556995, 0, 0.212307781, 0)
 CmdBar.Size = UDim2.new(0, 274, 0, 184)
 CmdBar.Font = Enum.Font.Cartoon
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+CmdBar.Text = "Key Required"
 CmdBar.TextColor3 = Color3.fromRGB(0, 0, 0)
-CmdBar.TextSize = 15
+CmdBar.TextSize = 20
 
 -- Variable 
 speeds = 1
@@ -162,9 +165,37 @@ local obj = game.workspace
 	        end XrayOff(v)
 	    end
 	end
+	local StartKey = "errnatsukiguihub"
+	local StartKeyLocal = false
 	
+	function KeyRq()
+	if CmdBar.Text == StartKey then
+StartKeyLocal = true
+game:GetService("StarterGui"):SetCore("SendNotification",{
+Title = "Key",
+Text = "Key Correct Start Exploit",
+Duration = 3
+})
+wait(1.5)
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+Press.Text = "Execute"
+StartKey = "Dcbuefbeknvveihefoijjddsjseeesjhbddheincefegeg"
+KeyRq:Destroy()
+end
+if not CmdBar.Text == StartKey then
+game:GetService("StarterGui"):SetCore("SendNotification",{
+Title = "Key",
+Text = "Key Incorrect Try Again",
+Duration = 3
+})
+end
+end
 Press.MouseButton1Down:connect(function()
-if CmdBar.Text then
+KeyRq()
+if StartKeyLocal == false then
+CmdBar.Text = "Key Needed"
+end
+if StartKeyLocal == true then
 if CmdBar.Text == xrayonkey then
 XrayOn(obj)
 CmdBar.Text = "Succesful Execute Command "..xrayonkey
@@ -276,7 +307,7 @@ CmdBar.Text = "Succesful Execute Command "..flyonkey
 		local ctrl = {f = 0, b = 0, l = 0, r = 0}
 		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
 		local maxspeed = 50
-		local speed = 5
+		local speed = 16
 
 
 		local bg = Instance.new("BodyGyro", UpperTorso)
@@ -311,10 +342,7 @@ CmdBar.Text = "Succesful Execute Command "..flyonkey
 			else
 				bv.velocity = Vector3.new(0,0,0)
 			end
-end
-if CmdBar.Text == flyoffkey then
-CmdBar.Text = "Succesful Execute Command "..flyoffkey
-bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
 		end
 		ctrl = {f = 0, b = 0, l = 0, r = 0}
 		lastctrl = {f = 0, b = 0, l = 0, r = 0}
@@ -325,12 +353,22 @@ bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.r
 		game.Players.LocalPlayer.Character.Animate.Disabled = false
 		tpwalking = false
 end
-if CmdBar.Text == killallkey then
+if CmdBar.Text == speedkey then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 250
+CmdBar.Text = "Succesful Execute Command "..speedkey
+end
+if CmdBar.Text == gunkey then
 for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				Kill(v)
 			end
 		end
+end
+if CmdBar.Text == rejoinkey then
+game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+end
+if CmdBar.Text == rejoinallkey then
+game:GetService("TeleportService"):Teleport(game.PlaceId, Players)
 end
 if CmdBar.Text == ""..Prefix.."changePrefix !" then
 Prefix = "!"
@@ -340,8 +378,10 @@ espoffkey = ""..Prefix.."esp off"
 xrayonkey = ""..Prefix.."xray on"
 xrayoffkey = ""..Prefix.."xray off"
 flyonkey = ""..Prefix.."fly on"
-flyoffkey = ""..Prefix.."fly off"
+speedkey = ""..Prefix.."speedhack"
 gunkey = ""..Prefix.."gun"
+rejoinkey = ""..Prefix.."rejoin"
+rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix ;" then
@@ -352,8 +392,10 @@ espoffkey = ""..Prefix.."esp off"
 xrayonkey = ""..Prefix.."xray on"
 xrayoffkey = ""..Prefix.."xray off"
 flyonkey = ""..Prefix.."fly on"
-flyoffkey = ""..Prefix.."fly off"
+speedkey = ""..Prefix.."speedhack"
 gunkey = ""..Prefix.."gun"
+rejoinkey = ""..Prefix.."rejoin"
+rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix ;" then
@@ -364,8 +406,10 @@ espoffkey = ""..Prefix.."esp off"
 xrayonkey = ""..Prefix.."xray on"
 xrayoffkey = ""..Prefix.."xray off"
 flyonkey = ""..Prefix.."fly on"
-flyoffkey = ""..Prefix.."fly off"
+speedkey = ""..Prefix.."speedhack"
 gunkey = ""..Prefix.."gun"
+rejoinkey = ""..Prefix.."rejoin"
+rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix /" then
@@ -376,8 +420,10 @@ espoffkey = ""..Prefix.."esp off"
 xrayonkey = ""..Prefix.."xray on"
 xrayoffkey = ""..Prefix.."xray off"
 flyonkey = ""..Prefix.."fly on"
-flyoffkey = ""..Prefix.."fly off"
+speedkey = ""..Prefix.."speedhack"
 gunkey = ""..Prefix.."gun"
+rejoinkey = ""..Prefix.."rejoin"
+rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == ""..Prefix.."changePrefix ." then
@@ -388,14 +434,14 @@ espoffkey = ""..Prefix.."esp off"
 xrayonkey = ""..Prefix.."xray on"
 xrayoffkey = ""..Prefix.."xray off"
 flyonkey = ""..Prefix.."fly on"
-flyoffkey = ""..Prefix.."fly off"
+speedkey = ""..Prefix.."speedhack"
 gunkey = ""..Prefix.."gun"
+rejoinkey = ""..Prefix.."rejoin"
+rejoinallkey = ""..Prefix.."rejoin all"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
 end
 if CmdBar.Text == cmdskey then
-CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.." / "..flyoffkey.."\n"..gunkey.."\n"..Prefix.."changePrefix ! or ; or : or / or ."
+CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.."\n"..speedkey.."\n"..gunkey.."\n"..rejoinkey.." / "..rejoinallkey.."\n"..Prefix.."changePrefix ! or ; or : or / or ."
 end
-else
-CmdBar.Text = "Invalid Commands "..CmdBar.Text
 end
 end)
