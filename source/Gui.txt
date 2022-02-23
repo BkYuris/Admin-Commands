@@ -1,0 +1,408 @@
+-- Prefix Words
+local Prefix = ";"
+
+-- Help Commands
+local cmdskey = ""..Prefix.."cmds"
+
+-- key
+local esponkey = ""..Prefix.."esp on"
+local espoffkey = ""..Prefix.."esp off"
+local xrayonkey = ""..Prefix.."xray on"
+local xrayoffkey = ""..Prefix.."xray off"
+local flyonkey = ""..Prefix.."fly on"
+local flyoffkey = ""..Prefix.."fly off"
+local gunkey = ""..Prefix.."gun"
+-- BL
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Admin = Instance.new("TextLabel")
+local Press = Instance.new("TextButton")
+local scrollExe = Instance.new("ScrollingFrame")
+local CmdBar = Instance.new("TextBox")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+local Players = game:GetService("Players").LocalPlayer
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(183, 101, 255)
+Frame.Position = UDim2.new(0.369825214, 0, 0.423832893, 0)
+Frame.Size = UDim2.new(0, 316, 0, 325)
+Frame.Active = true
+Frame.Draggable = true
+
+Admin.Parent = Frame
+Admin.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
+Admin.Size = UDim2.new(0, 316, 0, 50)
+Admin.Font = Enum.Font.SciFi
+Admin.Text = "Created By Err Natsuki\nAdmin Commands"
+Admin.TextColor3 = Color3.fromRGB(0, 0, 0)
+Admin.TextSize = 30.000
+
+Press.Parent = Frame
+Press.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
+Press.Position = UDim2.new(0, 0, 0.846153915, 0)
+Press.Size = UDim2.new(0, 316, 0, 50)
+Press.Font = Enum.Font.SciFi
+Press.Text = "Execute"
+Press.TextColor3 = Color3.fromRGB(0, 0, 0)
+Press.TextSize = 28.000
+
+scrollExe.Name = "scrollExe"
+scrollExe.Parent = Frame
+scrollExe.BackgroundColor3 = Color3.fromRGB(125, 102, 255)
+scrollExe.Position = UDim2.new(0.0664556995, 0, 0.212307781, 0)
+scrollExe.Size = UDim2.new(0, 274, 0, 184)
+
+CmdBar.Name = "CmdBar"
+CmdBar.Parent = scrollExe
+CmdBar.BackgroundColor3 = Color3.fromRGB(125, 102, 255)
+CmdBar.Position = UDim2.new(0.0664556995, 0, 0.212307781, 0)
+CmdBar.Size = UDim2.new(0, 274, 0, 184)
+CmdBar.Font = Enum.Font.Cartoon
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+CmdBar.TextColor3 = Color3.fromRGB(0, 0, 0)
+CmdBar.TextSize = 15
+
+-- Variable 
+speeds = 1
+
+local speaker = game:GetService("Players").LocalPlayer
+
+local chr = game.Players.LocalPlayer.Character
+local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+
+nowe = false
+
+Frame.Active = true -- main = gui
+Frame.Draggable = true
+
+-- all Function
+
+function Kill(Player)
+	pcall(function()
+		if Player.Character:FindFirstChild("ForceField") or not workspace:FindFirstChild(Player.Name) or not workspace:FindFirstChild(Player.Name):FindFirstChild("Head") or Player == nil or Player.Character.Parent ~= workspace then return end
+		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+
+		local MyTeam = GetTeam()
+		if Player.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+			local savedcf = GetPos()
+			local savedcamcf = GetCamPos()
+			workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+			workspace.CurrentCamera.CFrame = savedcamcf
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+		end
+
+		local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
+
+		local FireEvent = {
+			[1] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [2] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [3] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [4] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [5] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [6] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [7] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}, [8] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()), 
+				["Distance"] = 0, 
+				["Cframe"] = CFrame.new(), 
+				["Hit"] = workspace[Player.Name].Head
+			}
+		}
+
+		game:GetService("ReplicatedStorage").ShootEvent:FireServer(FireEvent, Gun)
+		Gun.Parent = game.Players.LocalPlayer.Character
+		game.Players.LocalPlayer.Character["Remington 870"]:Destroy()
+	end)
+end
+
+local obj = game.workspace
+	function XrayOn(obj) --Enables xray
+	    for _,v in pairs(obj:GetChildren()) do
+	        if (v:IsA("BasePart")) and not v.Parent:FindFirstChild("Humanoid") then
+	            v.LocalTransparencyModifier = 0.75
+	        end
+	    XrayOn(v)
+	    end
+	end
+	 
+	function XrayOff(obj) --Disables xray
+	    for _,v in pairs(obj:GetChildren()) do
+	        if (v:IsA("BasePart")) and not v.Parent:FindFirstChild("Humanoid") then
+	            v.LocalTransparencyModifier = 0
+	        end XrayOff(v)
+	    end
+	end
+	
+Press.MouseButton1Down:connect(function()
+if CmdBar.Text then
+if CmdBar.Text == xrayonkey then
+XrayOn(obj)
+CmdBar.Text = "Succesful Execute Command "..xrayonkey
+end
+if CmdBar.Text == xrayoffkey then
+CmdBar.Text = "Succesful Execute Command "..xrayoffkey
+XrayOff(obj)
+end
+if CmdBar.Text == esponkey then
+CmdBar.Text = "Succesful Execute Command "..esponkey
+for i, v in pairs(game.Players:children()) do
+local esps = Instance.new("BoxHandleAdornment")
+esps.Parent = v.Character.Head
+esps.Size = Vector3.new(1,1,1)
+esps.Color3 = Color3.new(0, 255, 0)
+esps.AlwaysOnTop = true
+esps.Adornee = v.Character.Head
+esps.Visible = true
+esps.ZIndex = 2
+end
+end
+if CmdBar.Text == espoffkey then
+CmdBar.Text = "Succesful Execute Command "..espoffkey
+for i, v in pairs(game.Players:children()) do
+for i, a in pairs(v.Character.Head:children()) do
+if a.ClassName == "BoxHandleAdornment" then
+a:remove()
+end
+end
+end
+end
+if CmdBar.Text == flyonkey then
+CmdBar.Text = "Succesful Execute Command "..flyonkey
+
+	if nowe == true then
+		nowe = false
+
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+	else 
+		nowe = true
+
+
+
+		for i = 1, speeds do
+			spawn(function()
+
+				local hb = game:GetService("RunService").Heartbeat	
+
+
+				tpwalking = true
+				local chr = game.Players.LocalPlayer.Character
+				local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+				while tpwalking and hb:Wait() and chr and hum and hum.Parent do
+					if hum.MoveDirection.Magnitude > 0 then
+						chr:TranslateBy(hum.MoveDirection)
+					end
+				end
+
+			end)
+		end
+		game.Players.LocalPlayer.Character.Animate.Disabled = true
+		local Char = game.Players.LocalPlayer.Character
+		local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+		for i,v in next, Hum:GetPlayingAnimationTracks() do
+			v:AdjustSpeed(0)
+		end
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+	end
+
+
+
+
+	
+		local plr = game.Players.LocalPlayer
+		local UpperTorso = plr.Character.LowerTorso
+		local flying = true
+		local deb = true
+		local ctrl = {f = 0, b = 0, l = 0, r = 0}
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		local maxspeed = 50
+		local speed = 5
+
+
+		local bg = Instance.new("BodyGyro", UpperTorso)
+		bg.P = 9e4
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.cframe = UpperTorso.CFrame
+		local bv = Instance.new("BodyVelocity", UpperTorso)
+		bv.velocity = Vector3.new(0,0.1,0)
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		if nowe == true then
+			plr.Character.Humanoid.PlatformStand = true
+		end
+		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
+			wait()
+
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+				speed = speed+.5+(speed/maxspeed)
+				if speed > maxspeed then
+					speed = maxspeed
+				end
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+				speed = speed-1
+				if speed < 0 then
+					speed = 0
+				end
+			end
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+			else
+				bv.velocity = Vector3.new(0,0,0)
+			end
+end
+if CmdBar.Text == flyoffkey then
+CmdBar.Text = "Succesful Execute Command "..flyoffkey
+bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+		end
+		ctrl = {f = 0, b = 0, l = 0, r = 0}
+		lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		speed = 0
+		bg:Destroy()
+		bv:Destroy()
+		plr.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		tpwalking = false
+end
+if CmdBar.Text == killallkey then
+for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				Kill(v)
+			end
+		end
+end
+if CmdBar.Text == ""..Prefix.."changePrefix !" then
+Prefix = "!"
+cmdskey = ""..Prefix.."cmds"
+esponkey = ""..Prefix.."esp on"
+espoffkey = ""..Prefix.."esp off"
+xrayonkey = ""..Prefix.."xray on"
+xrayoffkey = ""..Prefix.."xray off"
+flyonkey = ""..Prefix.."fly on"
+flyoffkey = ""..Prefix.."fly off"
+gunkey = ""..Prefix.."gun"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == ""..Prefix.."changePrefix ;" then
+Prefix = ";"
+cmdskey = ""..Prefix.."cmds"
+esponkey = ""..Prefix.."esp on"
+espoffkey = ""..Prefix.."esp off"
+xrayonkey = ""..Prefix.."xray on"
+xrayoffkey = ""..Prefix.."xray off"
+flyonkey = ""..Prefix.."fly on"
+flyoffkey = ""..Prefix.."fly off"
+gunkey = ""..Prefix.."gun"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == ""..Prefix.."changePrefix ;" then
+Prefix = ";"
+cmdskey = ""..Prefix.."cmds"
+esponkey = ""..Prefix.."esp on"
+espoffkey = ""..Prefix.."esp off"
+xrayonkey = ""..Prefix.."xray on"
+xrayoffkey = ""..Prefix.."xray off"
+flyonkey = ""..Prefix.."fly on"
+flyoffkey = ""..Prefix.."fly off"
+gunkey = ""..Prefix.."gun"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == ""..Prefix.."changePrefix /" then
+Prefix = "/"
+cmdskey = ""..Prefix.."cmds"
+esponkey = ""..Prefix.."esp on"
+espoffkey = ""..Prefix.."esp off"
+xrayonkey = ""..Prefix.."xray on"
+xrayoffkey = ""..Prefix.."xray off"
+flyonkey = ""..Prefix.."fly on"
+flyoffkey = ""..Prefix.."fly off"
+gunkey = ""..Prefix.."gun"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == ""..Prefix.."changePrefix ." then
+Prefix = "."
+cmdskey = ""..Prefix.."cmds"
+esponkey = ""..Prefix.."esp on"
+espoffkey = ""..Prefix.."esp off"
+xrayonkey = ""..Prefix.."xray on"
+xrayoffkey = ""..Prefix.."xray off"
+flyonkey = ""..Prefix.."fly on"
+flyoffkey = ""..Prefix.."fly off"
+gunkey = ""..Prefix.."gun"
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+end
+if CmdBar.Text == cmdskey then
+CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.." / "..flyoffkey.."\n"..gunkey.."\n"..Prefix.."changePrefix ! or ; or : or / or ."
+end
+else
+CmdBar.Text = "Invalid Commands "..CmdBar.Text
+end
+end)
