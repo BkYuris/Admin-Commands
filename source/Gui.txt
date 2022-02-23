@@ -386,6 +386,9 @@ end
 if CmdBar.Text == noclipoffkey then
 State.Noclip = false
 end
+if CmdBar.Text == "i forgot my prefix" then
+CmdBar.Text = ForgotPrefix
+end
 if CmdBar.Text == ""..Prefix.."changePrefix !" then
 Prefix = "!"
 CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
