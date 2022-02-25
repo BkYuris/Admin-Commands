@@ -1,23 +1,13 @@
 -- Prefix Words
 local Prefix = ";"
 local ForgotPrefix = "Your Prefix is '"..Prefix.."'"
+local ExecuteChat = false
+
+-- Print
+prints = 0
 
 -- Help Commands
 local cmdskey = ""..Prefix.."cmds"
-
--- key
-local esponkey = ""..Prefix.."esp on"
-local espoffkey = ""..Prefix.."esp off"
-local xrayonkey = ""..Prefix.."xray on"
-local xrayoffkey = ""..Prefix.."xray off"
-local flyonkey = ""..Prefix.."fly"
-local speedkey = ""..Prefix.."speedhack"
-local gunkey = ""..Prefix.."gun"
-local rejoinkey = ""..Prefix.."rejoin me"
-local rejoinallkey = ""..Prefix.."rejoin all"
-local nocliponkey = ""..Prefix.."noclip on"
-local noclipoffkey = ""..Prefix.."noclip off"
--- BL
 
 -- Instances:
 
@@ -25,6 +15,8 @@ local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Admin = Instance.new("TextLabel")
 local Press = Instance.new("TextButton")
+local OPEN = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
 local CmdBar = Instance.new("TextBox")
 
 --Properties:
@@ -36,7 +28,7 @@ local Players = game:GetService("Players").LocalPlayer
 
 Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(183, 101, 255)
-Frame.Position = UDim2.new(0.369825214, 0, 0.423832893, 0)
+Frame.Position = UDim2.new(0.5, 0, -0.5, 0)
 Frame.Size = UDim2.new(0, 316, 0, 325)
 Frame.Active = true
 Frame.Draggable = true
@@ -60,13 +52,35 @@ Press.TextSize = 28.000
 
 CmdBar.Name = "CmdBar"
 CmdBar.Parent = Frame
+CmdBar.BorderColor3 = Color3.fromRGB(40, 40, 40)
+CmdBar.BorderSizePixel = 0
+CmdBar.Size = UDim2.new(0, 274, 0, 184)
+CmdBar.Text = "Key Required"
+CmdBar.Font = Enum.Font.Gotham
+CmdBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+CmdBar.TextSize = 14.000
 CmdBar.BackgroundColor3 = Color3.fromRGB(125, 102, 255)
 CmdBar.Position = UDim2.new(0.0664556995, 0, 0.212307781, 0)
-CmdBar.Size = UDim2.new(0, 274, 0, 184)
-CmdBar.Font = Enum.Font.Cartoon
-CmdBar.Text = "Key Required"
-CmdBar.TextColor3 = Color3.fromRGB(0, 0, 0)
-CmdBar.TextSize = 20
+
+-- TextButton.Size = UDim2.new(0, 274, 0, 184)
+
+OPEN.Parent = Frame
+OPEN.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
+OPEN.Position = UDim2.new(0, 385, 0, 0)
+OPEN.Size = UDim2.new(0, 50, 0, 50)
+OPEN.Font = Enum.Font.SciFi
+OPEN.Text = "-"
+OPEN.TextColor3 = Color3.fromRGB(0, 0, 0)
+OPEN.TextSize = 30.000
+
+Close.Parent = Frame
+Close.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
+Close.Position = UDim2.new(0, 325, 0, 0)
+Close.Size = UDim2.new(0, 50, 0, 50)
+Close.Font = Enum.Font.SciFi
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(0, 0, 0)
+Close.TextSize = 30.000
 
 -- Variable 
 speeds = 1
@@ -80,8 +94,218 @@ nowe = false
 
 Frame.Active = true -- main = gui
 Frame.Draggable = true
+local Watching = nil
+
 
 -- all Function
+
+function Command(Keys)
+return CmdBar.Text == Prefix..Keys
+end
+
+function ChangePrefix(Change)
+CmdBar.Text = "Changing Prefix."
+wait(0.5)
+CmdBar.Text = "Changing Prefix.."
+wait(0.5)
+CmdBar.Text = "Changing Prefix..."
+wait(0.5)
+CmdBar.Text = "Changing Prefix.."
+wait(0.5)
+CmdBar.Text = "Changing Prefix."
+wait(0.5)
+CmdBar.Text = "Changing Prefix.."
+wait(0.5)
+CmdBar.Text = "Changing Prefix..."
+wait(0.5)
+CmdBar.Text = "Changing Prefix.."
+wait(0.5)
+CmdBar.Text = "Changing Prefix."
+wait(1)
+Prefix = Change
+CmdBar.Text = "Success"
+wait(0.5)
+CmdBar.Text = "Your Prefix now is '"..Prefix.."'"
+end
+function Arrest(Player, Time)
+	local Time = Time or 1
+	local savedcf = GetPos()
+	local savedcamcf = GetCamPos()
+	local savedteam = GetTeam()
+	if Player then
+		repeat wait()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+			for i = 1,Time do
+				coroutine.wrap(function()
+					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
+				end)()
+			end
+		until Player.Character:FindFirstChild("Head"):FindFirstChild("handcuffedGui")
+		wait()
+	end
+	workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new(savedteam).Name)
+	game.Players.LocalPlayer.Character.Humanoid.Sit = false
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+	workspace.CurrentCamera.CFrame = savedcamcf
+end
+
+function CreateBeam(Player, Distance, Position)
+	if Player then
+		pcall(function()
+			local Backpack = game.Players.LocalPlayer.Backpack
+			local Character = game.Players.LocalPlayer.Character
+			local Gun = Backpack:FindFirstChild("Remington 870") or Character:FindFirstChild("Remington 870")
+			if not Gun then
+				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			end
+			Gun = Backpack:FindFirstChild("Remington 870") or Character:FindFirstChild("Remington 870")
+			local Head = Player.Character.Head
+			if Head and Player and Character and Backpack and Gun and Distance and Position then
+				game.ReplicatedStorage.ShootEvent:FireServer({
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head}
+				}, Gun)
+			end
+			Gun.Parent = game.Players.LocalPlayer.Character
+			game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destroy()
+		end)
+	end
+end
+
+function CreateBeam2(Player, Distance, Position)
+	if Player then
+		pcall(function()
+			local Backpack = game.Players.LocalPlayer.Backpack
+			local Character = game.Players.LocalPlayer.Character
+			local Gun = Backpack:FindFirstChild("AK-47") or Character:FindFirstChild("AK-47")
+			if not Gun then
+				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
+			end
+			Gun = Backpack:FindFirstChild("AK-47") or Character:FindFirstChild("AK-47")
+			local Head = Player.Character.Head
+			if Head and Player and Character and Backpack and Gun and Distance and Position then
+				game.ReplicatedStorage.ShootEvent:FireServer({
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+				}, Gun)
+			end
+			Gun.Parent = game.Players.LocalPlayer.Character
+			game.Players.LocalPlayer.Character:FindFirstChild("AK-47"):Destroy()
+		end)
+	end
+end
+Frame:TweenPosition(UDim2.new(0.369825214, 0, 0.423832893, 0), "In", "Quad", 0.5, true)
+function CreateBeam3(Player, Distance, Position)
+	if Player then
+		pcall(function()
+			local Backpack = game.Players.LocalPlayer.Backpack
+			local Character = game.Players.LocalPlayer.Character
+			local Gun = Backpack:FindFirstChild("M9") or Character:FindFirstChild("M9")
+			if not Gun then
+				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			end
+			Gun = Backpack:FindFirstChild("M9") or Character:FindFirstChild("M9")
+			local Head = Player.Character.Head
+			if Head and Player and Character and Backpack and Gun and Distance and Position then
+				game.ReplicatedStorage.ShootEvent:FireServer({
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
+					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head}
+				}, Gun)
+			end
+			Gun.Parent = game.Players.LocalPlayer.Character
+			game.Players.LocalPlayer.Character:FindFirstChild("M9"):Destroy()
+		end)
+	end
+end
+
+function Beam(Player, Distance, Time)
+	if Player and Distance then
+		local RunService = game:GetService("RunService")
+		RunService:BindToRenderStep(Player.Name, math.huge, function()
+			coroutine.wrap(function()
+				CreateBeam(Player, Distance, Player.Character.HumanoidRootPart.CFrame)
+			end)()
+		end)
+		delay(Time, function()
+			pcall(function()
+				RunService:UnbindFromRenderStep(Player.Name)
+			end)
+		end)
+	end
+end
+
+function LagBeam(Player, Distance, Time)
+	if Player and Distance then
+		local RunService = game:GetService("RunService")
+		RunService:BindToRenderStep(Player.Name, math.huge, function()
+			coroutine.wrap(function()
+				CreateBeam(Player, Distance, Player.Character.HumanoidRootPart.CFrame)
+			end)()
+			coroutine.wrap(function()
+				CreateBeam2(Player, Distance, Player.Character.HumanoidRootPart.CFrame)
+			end)()
+			coroutine.wrap(function()
+				CreateBeam3(Player, Distance, Player.Character.HumanoidRootPart.CFrame)
+			end)()
+		end)
+		delay(Time, function()
+			pcall(function()
+				RunService:UnbindFromRenderStep(Player.Name)
+			end)
+		end)
+	end
+end
+local function GetTeam()
+	return game.Players.LocalPlayer.TeamColor.Name
+end
+local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
 
 function Kill(Player)
 	pcall(function()
@@ -167,7 +391,7 @@ local obj = game.workspace
 	        end XrayOff(v)
 	    end
 	end
-	local StartKey = "errnatsukiguihub"
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/source/Password.txt", true))()
 	local StartKeyLocal = false
 	
 	function KeyRq()
@@ -179,7 +403,7 @@ Text = "Key Correct Start Exploit",
 Duration = 3
 })
 wait(1.5)
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..Prefix.."cmds"
 Press.Text = "Execute"
 StartKey = "Dcbuefbeknvveihefoijjddsjseeesjhbddheincefegeg"
 KeyRq:Destroy()
@@ -190,48 +414,168 @@ Title = "Key",
 Text = "Key Incorrect Try Again",
 Duration = 3
 })
+wait(0.5)
+CmdBar.Text = "Key Incorrect Try Again"
 end
 end
+
+function Chat(Message, Whisper)
+if ExecuteChat == false then
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message, Whisper or "ALl")
+	else
+	end
+end
+local ESPToggle = false
+local plrs = game:GetService("Players")
+	local faces = {"Back","Bottom","Front","Left","Right","Top"}
+	function MakeESP()
+		for _, v in pairs(game.Players:GetChildren()) do if v.Name ~= game.Players.LocalPlayer.Name then
+				local bgui = Instance.new("BillboardGui",v.Character.Head)
+				bgui.Name = ("EGUI")
+				bgui.AlwaysOnTop = true
+				bgui.ExtentsOffset = Vector3.new(0,2,0)
+				bgui.Size = UDim2.new(0,200,0,50)
+				local nam = Instance.new("TextLabel",bgui)
+				nam.Text = v.Name
+				nam.BackgroundTransparency = 1
+				nam.TextSize = 15
+				nam.Font = ("GothamBold")
+				nam.TextColor3 = Color3.new(255,255,255)
+				nam.Size = UDim2.new(0,200,0,50)
+				if v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+					for _, p in pairs(v.Character:GetChildren()) do
+						if p.Name == ("Head") or p.Name == ("Torso") or p.Name == ("Right Arm") or p.Name == ("Right Leg") or p.Name == ("Left Arm") or p.Name == ("Left Leg") then 
+							for _, f in pairs(faces) do
+								local m = Instance.new("SurfaceGui",p)
+								m.Name = ("EGUI")
+								m.Face = f
+								m.AlwaysOnTop = true
+								local mf = Instance.new("Frame",m)
+								mf.Size = UDim2.new(1,0,1,0)
+								mf.BorderSizePixel = 0
+								mf.BackgroundTransparency = 0.5
+								mf.BackgroundColor3 = Color3.new(0,0,255)
+							end
+						end
+					end
+				elseif v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
+					for _, p in pairs(v.Character:GetChildren()) do
+						if p.Name == ("Head") or p.Name == ("Torso") or p.Name == ("Right Arm") or p.Name == ("Right Leg") or p.Name == ("Left Arm") or p.Name == ("Left Leg") then 
+							for _, f in pairs(faces) do
+								local m = Instance.new("SurfaceGui",p)
+								m.Name = ("EGUI")
+								m.Face = f
+								m.AlwaysOnTop = true
+								local mf = Instance.new("Frame",m)
+								mf.Size = UDim2.new(1,0,1,0)
+								mf.BorderSizePixel = 0
+								mf.BackgroundTransparency = 0.5
+								mf.BackgroundColor3 = Color3.new(255,0,0)
+							end
+						end
+					end
+				else
+					for _, p in pairs(v.Character:GetChildren()) do
+						if p.Name == ("Head") or p.Name == ("Torso") or p.Name == ("Right Arm") or p.Name == ("Right Leg") or p.Name == ("Left Arm") or p.Name == ("Left Leg") then 
+							for _, f in pairs(faces) do
+								local m = Instance.new("SurfaceGui",p)
+								m.Name = ("EGUI")
+								m.Face = f
+								m.AlwaysOnTop = true
+								local mf = Instance.new("Frame",m)
+								mf.Size = UDim2.new(1,0,1,0)
+								mf.BorderSizePixel = 0
+								mf.BackgroundTransparency = 0.5
+								mf.BackgroundColor3 = Color3.new(255,255,255)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	function ClearESP()
+		for _, v in pairs(game.Workspace:GetDescendants()) do
+			if v.Name == ("EGUI") then
+				v:Remove()
+			end
+		end
+	end
+	
 Press.MouseButton1Down:connect(function()
 KeyRq()
 if StartKeyLocal == false then
 CmdBar.Text = "Key Needed"
 end
 if StartKeyLocal == true then
-if CmdBar.Text == xrayonkey then
+if Command("xray on") then
+Chat(Prefix.."xray on")
 XrayOn(obj)
-CmdBar.Text = "Succesful Execute Command "..xrayonkey
+CmdBar.Text = "Succesful Execute Command "..Prefix.."xray on"
+prints = prints + 1
 end
-if CmdBar.Text == xrayoffkey then
-CmdBar.Text = "Succesful Execute Command "..xrayoffkey
+if Command("xray off") then
+Chat(Prefix.."xray off")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."xray off"
 XrayOff(obj)
+prints = prints + 1
 end
-if CmdBar.Text == esponkey then
-CmdBar.Text = "Succesful Execute Command "..esponkey
-for i, v in pairs(game.Players:children()) do
-local esps = Instance.new("BoxHandleAdornment")
-esps.Parent = v.Character.Head
-esps.Size = Vector3.new(1,1,1)
-esps.Color3 = Color3.new(0, 255, 0)
-esps.AlwaysOnTop = true
-esps.Adornee = v.Character.Head
-esps.Visible = true
-esps.ZIndex = 2
+if Command("esp on") then
+Chat(Prefix.."esp on")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."esp on"
+if ESPToggle == false then
+				ESPToggle = true
+				pcall(ClearESP)
+				pcall(MakeESP)
+			else
+				ESPToggle = false
+				pcall(ClearESP)
+			end
+		
+	
+	
+	game:GetService("Players").PlayerAdded:Connect(function(v)
+		if ESPToggle == true then
+			wait(1)
+			pcall(ClearESP)
+			pcall(MakeESP)
+		end
+	end)
+	
+	game:GetService("Players").PlayerRemoving:Connect(function(v)
+		if ESPToggle == true then
+			wait(1)
+			pcall(ClearESP)
+			pcall(MakeESP)
+		end
+	end)
+	
+	while wait(60) do
+		if ESPToggle == true then
+			wait(1)
+			pcall(ClearESP)
+			pcall(MakeESP)
+		end
+	end
+	prints = prints + 1
 end
+if Command("esp off") then
+Chat(Prefix.."esp off")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."esp off"
+if ESPToggle == false then
+ESPToggle = true
+pcall(ClearESP)
+pcall(MakeESP)
+else
+ESPToggle = false
+pcall(ClearESP)
 end
-if CmdBar.Text == espoffkey then
-CmdBar.Text = "Succesful Execute Command "..espoffkey
-for i, v in pairs(game.Players:children()) do
-for i, a in pairs(v.Character.Head:children()) do
-if a.ClassName == "BoxHandleAdornment" then
-a:remove()
+prints = prints + 1
 end
-end
-end
-end
-if CmdBar.Text == flyonkey then
-CmdBar.Text = "Succesful Execute Command "..flyonkey
-
+if Command("fly") then
+Chat(Prefix.."fly")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."fly"
 	if nowe == true then
 		nowe = false
 
@@ -354,139 +698,240 @@ CmdBar.Text = "Succesful Execute Command "..flyonkey
 		plr.Character.Humanoid.PlatformStand = false
 		game.Players.LocalPlayer.Character.Animate.Disabled = false
 		tpwalking = false
+		prints = prints + 1
 end
-if CmdBar.Text == speedkey then
+if Command("speedhack on") then
+Chat(Prefix.."speedhack on")
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 250
-CmdBar.Text = "Succesful Execute Command "..speedkey
+CmdBar.Text = "Succesful Execute Command "..Prefix.."speedhack on"
+prints = prints + 1
 end
-if CmdBar.Text == gunkey then
+if Command("speedhack off") then
+Chat(Prefix.."speedhack off")
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+CmdBar.Text = "Succesful Execute Command "..Prefix.."speedhack off"
+prints = prints + 1
+end
+if Command("gun") then
+CmdBar.Text = "Succesful Execute Command "..Prefix.."gun"
+if BuyGamepass then
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+		else
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+		end
+		Chat(Prefix.."gun")
+		prints = prints + 1
+	end
+if Command("rejoin") then
+Chat(Prefix.."rejoin")
+game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+prints = prints + 1
+end
+if Command("crimbase") then
+Chat(Prefix.."crimbase")
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-943, 95, 2055)
+CmdBar.Text = "Succesful Execute Command "..Prefix.."crimbase"
+prints = prints + 1
+end
+if Command("kill all guards") then
+Chat(Prefix.."kill all guards")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."kill all guards"
+for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				if v.TeamColor.Name == "Bright blue" then
+					Kill(v)
+				end
+			end
+		end
+		prints = prints + 1
+	end
+if Command("tower") then
+Chat(Prefix.."tower")
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(822, 131, 2588)
+CmdBar.Text = "Succesful Execute Command "..Prefix.."tower"
+prints = prints + 1
+end
+if Command("changePrefix !") then
+ChangePrefix("!")
+prints = prints + 1
+end
+if Command("changePrefix ;") then
+ChangePrefix(";")
+prints = prints + 1
+end
+if Command("changePrefix :") then
+ChangePrefix(":")
+prints = prints + 1
+end
+if Command("changePrefix /") then
+ChangePrefix("/")
+prints = prints + 1
+end
+if Command("changePrefix .") then
+ChangePrefix(".")
+prints = prints + 1
+end
+if Command("changePrefix *") then
+ChangePrefix("*")
+prints = prints + 1
+end
+if Command("kill all criminals") then
+Chat(Prefix.."kill all criminals")
+CmdBar.Text = "Succesful Execute Command "..Prefix.."kill all criminals"
+for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				if v.TeamColor.Name == "Really red" then
+			Kill(v)
+		end
+	end
+end
+prints = prints + 1
+end
+if Command("kill all") then
+CmdBar.Text = "Succesful Execute Command "..Prefix.."kill all"
+Chat(Prefix.."kill all")
 for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				Kill(v)
 			end
 		end
+		prints = prints + 1
 end
-if CmdBar.Text == rejoinkey then
-game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+if Command("kill all inmates") then
+CmdBar.Text = "Succesful Execute Command "..Prefix.."kill all inmates"
+Chat(Prefix.."kill all inmates")
+for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				if v.TeamColor.Name == "Bright orange" then
+					Kill(v)
+				end
+			end
+		end
+		prints = prints + 1
 end
-if CmdBar.Text == rejoinallkey then
-game:GetService("TeleportService"):Teleport(game.PlaceId, Players)
+if Command("arrest all") then
+CmdBar.Text = "Succesful Execute Command "..Prefix.."arrest all"
+Chat(Prefix.."arrest all")
+for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				if v.TeamColor.Name == "Really red" then
+					Arrest(v, 30)
+				end
+			end
+		end
+		prints = prints + 1
 end
-if CmdBar.Text == nocliponkey then
-State.Noclip = true
-game:GetService("RunService").Stepped:Connect(function()
-if States.Noclips then
-pcall(function()
-game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
-game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
+if Command("disable autochat") then
+if ExecuteChat == true then
+CmdBar.Text = "Disable Chat is already enable"
+wait(0.5)
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..Prefix.."cmds"
+end
+if ExecuteChat == false then
+CmdBar.Text = "Disabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat..."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat..."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Disabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Success"
+wait(0.5)
+ExecuteChat = true
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..Prefix.."cmds"
+prints = prints + 1
+end
+end
+if Command("enable autochat") then
+if ExecuteChat == false then
+CmdBar.Text = "Enable Chat is already enable"
+wait(0.5)
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..Prefix.."cmds"
+end
+if ExecuteChat == true then
+CmdBar.Text = "Enabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat..."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat..."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat.."
+wait(0.5)
+CmdBar.Text = "Enabling AutoChat."
+wait(0.5)
+CmdBar.Text = "Success"
+wait(0.5)
+ExecuteChat = false
+CmdBar.Text = "Prefix is "..Prefix.."\nType "..Prefix.."cmds"
+prints = prints + 1
+end
+end
+if Command("cmds") then
+CmdBar.Text = "Command List\n"..Prefix.."esp on / "..Prefix.."esp off\n"..Prefix.."xray on / "..Prefix.."xray off\n"..Prefix.."fly\n"..Prefix.."speedhack on / "..Prefix.."speedhack off\n"..Prefix.."kill all / "..Prefix.."kill all inmates / "..Prefix.."kill all guards / "..Prefix.."kill all criminals\n"..Prefix.."changePrefix ! or ; or : or * or / or .\n"..Prefix.."gun\n"..Prefix.."tower\n"..Prefix.."crimbase\n"..Prefix.."rejoin\n"..Prefix.."disable autochat / "..Prefix.."enable autochat"
+prints = prints + 1
+end
+end
 end)
+
+local hs = false
+
+OPEN.MouseButton1Down:connect(function()
+if hs == false then
+hs = true
+OPEN.Text = "+"
+Frame.Size = UDim2.new(0, 316, 0, 50)
+CmdBar.Visible = false
+Press.Visible = false
+else
+hs = false
+OPEN.Text = "-"
+Frame.Size = UDim2.new(0, 316, 0, 325)
+CmdBar.Visible = true
+Press.Visible = true
 end
 end)
-end
-if CmdBar.Text == noclipoffkey then
-State.Noclip = false
-end
-if CmdBar.Text == "i forgot my prefix" then
-CmdBar.Text = ForgotPrefix
-end
-if CmdBar.Text == ""..Prefix.."changePrefix !" then
-Prefix = "!"
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == ""..Prefix.."changePrefix ;" then
-Prefix = ";"
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == ""..Prefix.."changePrefix :" then
-Prefix = ":"
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == ""..Prefix.."changePrefix /" then
-Prefix = "/"
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == ""..Prefix.."changePrefix ." then
-Prefix = "."
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == ""..Prefix.."changePrefix *" then
-Prefix = "*"
-ForgotPrefix = "Your Prefix is '"..Prefix.."'"
-esponkey = ""..Prefix.."esp on"
-espoffkey = ""..Prefix.."esp off"
-xrayonkey = ""..Prefix.."xray on"
-xrayoffkey = ""..Prefix.."xray off"
-flyonkey = ""..Prefix.."fly"
-speedkey = ""..Prefix.."speedhack"
-gunkey = ""..Prefix.."gun"
-rejoinkey = ""..Prefix.."rejoin me"
-rejoinallkey = ""..Prefix.."rejoin all"
-nocliponkey = ""..Prefix.."noclip on"
-noclipoffkey = ""..Prefix.."noclip off"
-CmdBar.Text = "Prefix is "..Prefix.."\nType "..cmdskey..""
-end
-if CmdBar.Text == cmdskey then
-CmdBar.Text = "Commands List Scroll to view all\n\n"..xrayonkey.." / "..xrayoffkey.."\n"..esponkey.." / "..espoffkey.."\n"..flyonkey.."\n"..speedkey.."\n"..gunkey.."\n"..rejoinkey.." / "..rejoinallkey.."\n"..Prefix.."noclip on / "..Prefix.."noclip off\n"..Prefix.."changePrefix ! or ; or : or / or . or *"
-end
-end
+
+Close.MouseButton1Down:connect(function()
+Frame.Active = false
+Frame.Visible = false
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Prints", 
+                Text = "Total Prints : "..prints.."", 
+                Duration = 3.5
+            })
+            wait(1)
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Credits", 
+                Text = "Modified By ErrNatsuki", 
+                Duration = 3.5
+            })
+            wait(1) game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Gui",
+                Text = "Byee",
+                Duration = 3.5
+            })
 end)
