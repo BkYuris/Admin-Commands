@@ -37,7 +37,7 @@ Admin.Parent = Frame
 Admin.BackgroundColor3 = Color3.fromRGB(128, 55, 255)
 Admin.Size = UDim2.new(0, 316, 0, 50)
 Admin.Font = Enum.Font.SciFi
-Admin.Text = "Created By Err Natsuki\nAdmin Commands"
+Admin.Text = "Created By Err Natsuki\nAdmin Commands\nVersion : 1.0"
 Admin.TextColor3 = Color3.fromRGB(0, 0, 0)
 Admin.TextSize = 30.000
 
