@@ -1,0 +1,115 @@
+game.StarterGui:SetCore("SendNotification", {
+Title = "Update",
+Text = "Checking if update Detected",
+Duration = 3
+})
+
+wait(2)
+
+local ver = 1.0
+local newver = 1.1
+
+local CmdGui = Instance.new("ScreenGui")
+local Background2 = Instance.new("Frame")
+local Label = Instance.new("TextLabel")
+local Execute = Instance.new("TextButton")
+
+CmdGui.Name = "CmdGui"
+CmdGui.Parent = game:GetService("CoreGui")
+CmdGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Background2.Name = "Background"
+Background2.Parent = CmdGui
+Background2.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
+Background2.BorderSizePixel = 0
+Background2.Position = UDim2.new(0.012, 0, 0.807, 0)
+Background2.Size = UDim2.new(0, 250, 0, 80)
+Background2.Active = true
+Background2.Visible = false
+Background2.Draggable = true
+
+Label.Name = "Label"
+Label.Parent = Background2
+Label.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
+Label.BorderSizePixel = 0
+Label.Position = UDim2.new(0, 0, 0, 0)
+Label.Size = UDim2.new(0, 250, 0, 25)
+Label.Font = Enum.Font.GothamBlack
+Label.Text = "New Version : "..newver.."\nFix Bug\nAdded : 1 Commands"
+Label.TextColor3 = Color3.fromRGB(255, 255, 0)
+Label.TextScaled = true
+Label.TextSize = 14.000
+Label.TextWrapped = true
+
+Execute.Name = "Execute"
+Execute.Parent = Background2
+Execute.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Execute.BorderColor3 = Color3.fromRGB(255, 128, 0)
+Execute.Position = UDim2.new(0.097, 0, 0.436, 0)
+Execute.Size = UDim2.new(0, 190, 0, 30)
+Execute.Font = Enum.Font.SourceSans
+Execute.Text = "Update"
+Execute.TextColor3 = Color3.fromRGB(255, 128, 0)
+Execute.TextSize = 14.000
+Execute.TextWrapped = true
+
+if not ver == 1.0 then
+game.StarterGui:SetCore("SendNotification", {
+Title = "Update",
+Text = "Update Detected",
+Duration = 3
+})
+Background2.Visible = true
+else
+game.StarterGui:SetCore("SendNotification", {
+Title = "Update",
+Text = "No Update Detected",
+Duration = 3
+})
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/BkYuris/Admin-Commands/main/LUA.txt'),true))()
+end
+
+local Ver = newver
+local ranked = nil
+local client = "136248.9"
+local pref = nil
+
+Execute.MouseButton1Down:connect(function()
+if Execute.Text == "Update" then
+Execute.Text = "Please Wait"
+Label.Text = "Updating Please Wait.."
+wait(3)
+Label.Text = "Decoding IY_OW.iy"
+pcall(function()
+local OW = game:GetService("HttpService"):JSONDecode(readfile("IY_OW.iy"))
+if OW.Rank ~= nil then
+ranked = OW.Rank
+else
+ranked = "Owner"
+end
+if OW.prefix ~= nil then
+pref = OW.prefix
+else
+pref = ";"
+end
+end)
+wait(6)
+Label.Text = "Encoding IY_OW.iy"
+local IYCode = {
+version = Ver,
+Rank = ranked,
+ClientVersion = client,
+prefix = pref
+}
+wait(10)
+Label.Text = "Saving Data"
+writefile("IY_OW.iy",game:GetService("HttpService"):JSONEncode(IYCode))
+wait(4)
+Label.Text = "Successful Save"
+wait(2)
+Execute.Text = "Exit"
+end
+if Execute.Text == "Exit" then
+Background2.Visible = false
+end
+end)
