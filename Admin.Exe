@@ -1,4 +1,12 @@
 game.StarterGui:SetCore("SendNotification", {
+Title = "Credits",
+Text = "Modified by Err Natsuki",
+Duration = 3
+})
+
+wait(2)
+
+game.StarterGui:SetCore("SendNotification", {
 Title = "Update",
 Text = "Checking if update Detected",
 Duration = 3
